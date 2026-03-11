@@ -26,4 +26,6 @@ RUN useradd --no-create-home --shell /bin/false appuser \
     && chown -R appuser /app
 USER appuser
 
-CMD ["sh", "-c", "streamlit run web/streamlit_app.py --server.port $PORT --server.address 0.0.0.0"]
+EXPOSE 5000
+
+CMD ["sh", "-c", "streamlit run web/streamlit_app.py --server.port ${PORT:-5000} --server.address 0.0.0.0"]
