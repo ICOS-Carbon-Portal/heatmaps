@@ -15,9 +15,3 @@ build/
 # Tools
 .pytest_cache/
 .ruff_cache/
-
-# Claude
-.claude/
-
-# OS
-.DS_Store
