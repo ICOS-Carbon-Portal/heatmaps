@@ -76,6 +76,24 @@ This writes output under `output/<timestamp>/report-2025/` and includes:
 - `tables/` — yearly percentages Excel workbooks for atmosphere and
   ecosystem from 2020 to the given year
 
+## Examples
+
+Atmosphere domain, weekly bin, 2025:
+
+```bash
+heatmaps --year 2025 --domain atmosphere --bin weekly
+```
+
+![Weekly atmosphere heatmap for 2025](examples/heatmap_atmosphere_w_2025.png)
+
+Ecosystem domain, monthly bin, 2025:
+
+```bash
+heatmaps --year 2025 --domain ecosystem --bin monthly
+```
+
+![Monthly ecosystem heatmap for 2025](examples/heatmap_ecosystem_m_2025.png)
+
 ## Shared options
 
 - `--cache-dir <path>`: cache fetched SPARQL data as parquet files on disk.
