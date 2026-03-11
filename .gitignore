@@ -1,1 +1,23 @@
-.idea/
+# Virtual environment
+.venv/
+
+# Output and cache
+output/
+backup/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Tools
+.pytest_cache/
+.ruff_cache/
+
+# Claude
+.claude/
+
+# OS
+.DS_Store
