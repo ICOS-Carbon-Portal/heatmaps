@@ -1,8 +1,0 @@
-domain: "atc"
-start: "23/11/2020"
-end: "23/11/2024"
-group: "M"
-title_period: "test_title"
-side_title_period: "test_side_title"
-file_name_period: "file_name_period"
-output_dir: "/home/user/output"
