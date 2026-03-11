@@ -10,9 +10,6 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ENV PATH="/root/.local/bin:$PATH"
 
-ENV PORT=8000
-EXPOSE 8000
-
 WORKDIR /app
 
 # Install Python dependencies before copying the full source to
