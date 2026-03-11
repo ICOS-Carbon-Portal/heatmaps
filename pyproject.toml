@@ -19,6 +19,9 @@ dependencies = [
   "typer>=0.16",
 ]
 
+[project.optional-dependencies]
+web = ["streamlit>=1.40"]
+
 [project.scripts]
 heatmaps = "heatmaps.heatmap_cli:run"
 
