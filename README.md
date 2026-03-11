@@ -1,31 +1,101 @@
-## ICOS Heatmaps
-An application to fetch and plot raw data from the ICOS Carbon Portal as 
-submitted by the measurement stations of the Ecosystem and Atmosphere domains.
+# ICOS Heatmaps
 
-## How to run
-- Install the needed dependencies using `pip install -r requirements.txt`
-- Customize your settings by filling in the details in `settings.yml`. Please
-  see the section below for a detailed explanation.
-- Run `python3 runner.py`.
-- Find generated plots and data in the custom output path specified in the 
-application's settings. 
+ICOS Heatmaps is a Python CLI that visualises raw data coverage across ICOS
+network stations. It fetches data live from the ICOS Carbon Portal via SPARQL
+and renders colour-coded heatmaps — broken down by station and time bin — for
+the atmosphere and ecosystem domains.
 
-## Settings
-- `domain`: The value of this setting can be one of these: ["atc", "etc"].
-- `start`: A string value representing the start datetime for slicing raw data.
-- `end`: A string value representing the end datetime for slicing raw data.
-- `group`: The value of this setting controls the binning of the raw data. It 
-can be set to "M" for monthly bins or "W" for weekly bins.
-- `title_period`: A string value that controls the time period in the title of 
-the `.png` plot.
-- `side_title_period`: A string value that controls the time period in the side 
-title of the `.png` plot.
-- `file_name_period`: A string value that controls the time period in the names
-of the `.png` and `.csv` files.
-- `output_dir`: The location where the generated files will be saved.
+## Installation
 
+Python 3.11 or later is required.
 
-## Generated heatmaps examples
-<img src="atc_example.png" alt="atc heatmap" width="900" height="560">
-<hr>
-<img src="etc_example.png" alt="etc heatmap" width="900" height="560">
+Run the following commands to set up the environment and install the package:
+
+```bash
+git clone <repo-url>
+cd heatmaps
+python -m venv .venv
+source .venv/bin/activate
+pip install .
+```
+
+Use `pip install -e .` instead if you intend to modify the source code
+(development / editable install).
+
+## Usage
+
+### Single heatmap
+
+Generate a heatmap for a single calendar year and domain:
+
+```bash
+heatmaps --year 2024 --domain atmosphere
+heatmaps --year 2024 --domain ecosystem --bin weekly
+```
+
+Options:
+
+- `--domain`: `atmosphere` or `ecosystem` (required)
+- `--year`: calendar year (required)
+- `--bin`: `monthly` or `weekly`, defaults to `monthly`
+
+### Period heatmap
+
+Generate a heatmap spanning a custom time range:
+
+```bash
+heatmaps --period 2019-2024 --domain atmosphere
+heatmaps --period 012024-092024 --domain ecosystem
+heatmaps --period 01012020-31012020 --domain atmosphere --bin weekly
+```
+
+Options:
+
+- `--period`: time range in one of three formats:
+  - `YYYY-YYYY` — year range
+  - `MMYYYY-MMYYYY` — month-year range
+  - `DDMMYYYY-DDMMYYYY` — day-month-year range
+- `--bin`: optional; auto-detected from period length if omitted —
+  weekly for periods shorter than 60 days, monthly otherwise
+- `--domain`: `atmosphere` or `ecosystem` (required)
+
+### Report mode
+
+Generate a full pre-defined yearly bundle in one step:
+
+```bash
+heatmaps --report 2025
+```
+
+This writes output under `output/<timestamp>/report-2025/` and includes:
+
+- `standalone-years/<year>/` — monthly and weekly heatmaps for atmosphere
+  and ecosystem, one subdirectory per year from 2020 to the given year
+- `cumulative/` — monthly heatmaps for atmosphere and ecosystem from
+  2020 to the given year
+- `tables/` — yearly percentages Excel workbooks for atmosphere and
+  ecosystem from 2020 to the given year
+
+## Shared options
+
+- `--cache-dir <path>`: cache fetched SPARQL data as parquet files on disk.
+  On subsequent runs over the same time range, data is read from cache
+  instead of being re-fetched, which can save significant time.
+- `--output-dir <path>`: base directory for output. Defaults to `output/`
+  under the current working directory. A timestamped subdirectory is always
+  created inside it.
+
+## Output
+
+Each invocation creates a timestamped subdirectory under the output base
+directory, using the format `YYYYMMDDTHHmmSS`. 
+
+## Credits
+
+`heatmaps` was developed within the ICOS / Carbon Portal ecosystem.
+
+Contributors:
+
+- Alex Vermeulen
+- [Claude Code](https://claude.ai/code) by Anthropic
+- Zois Zogopoulos
