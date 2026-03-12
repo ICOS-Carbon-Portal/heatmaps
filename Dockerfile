@@ -22,7 +22,7 @@ COPY . .
 RUN uv pip install . --system
 
 # Run as non-root
-RUN useradd --no-create-home --shell /bin/false appuser \
+RUN useradd --create-home --shell /bin/false appuser \
     && chown -R appuser /app
 USER appuser
 
