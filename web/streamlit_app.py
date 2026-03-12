@@ -41,8 +41,8 @@ st.title("ICOS Heatmaps")
 st.caption("Generate data-coverage heatmaps for ICOS atmosphere and ecosystem stations.")
 
 today = datetime.date.today()
-default_start = datetime.date(today.year, 1, 1)
-default_end = datetime.date(today.year, 12, 31)
+default_start = datetime.date(today.year - 1, 1, 1)
+default_end = datetime.date(today.year - 1, 12, 31)
 
 with st.sidebar:
     domain = st.selectbox("Domain", ["atmosphere", "ecosystem"])
@@ -58,7 +58,7 @@ with st.sidebar:
         generate = False
     else:
         start_date, end_date = date_range[0], date_range[1]
-        bin_choice = st.selectbox("Bin size", ["auto-detect", "monthly", "weekly"])
+        bin_choice = st.selectbox("Bin size", ["auto-detect", "monthly", "weekly"], index=2)
         generate = True if use_cache else st.button("Generate", use_container_width=True)
 
 if generate:
