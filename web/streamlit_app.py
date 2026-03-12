@@ -6,11 +6,17 @@ from pathlib import Path
 # Related imports
 import pandas as pd
 import streamlit as st
+from PIL import Image
 
 # Local imports
 from heatmaps.generator import generate_heatmap, generate_period_heatmap, optimal_bin_size
 
-st.set_page_config(page_title="ICOS Heatmaps", layout="wide")
+st.set_page_config(
+    page_title="ICOS Heatmaps",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    page_icon=Image.open(Path(__file__).parent / "favicon.ico"),
+)
 
 st.markdown(
     """
@@ -24,6 +30,8 @@ st.markdown(
         width: auto !important;
         object-fit: contain;
     }
+    [data-testid="collapsedControl"] { display: none; }
+    [data-testid="stBaseButton-headerNoPadding"] { display: none; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -38,6 +46,7 @@ default_end = datetime.date(today.year, 12, 31)
 
 with st.sidebar:
     domain = st.selectbox("Domain", ["atmosphere", "ecosystem"])
+    use_cache = st.checkbox("Use cache", value=True)
 
     date_range = st.date_input(
         "Date range",
@@ -50,10 +59,14 @@ with st.sidebar:
     else:
         start_date, end_date = date_range[0], date_range[1]
         bin_choice = st.selectbox("Bin size", ["auto-detect", "monthly", "weekly"])
-        generate = st.button("Generate", use_container_width=True)
+        generate = True if use_cache else st.button("Generate", use_container_width=True)
 
 if generate:
     try:
+        if use_cache:
+            Path("/tmp/heatmaps_cache").mkdir(parents=True, exist_ok=True)
+        cache_dir = Path("/tmp/heatmaps_cache") if use_cache else None
+
         with st.spinner("Fetching data and generating heatmap…"):
             with tempfile.TemporaryDirectory() as tmp:
                 output_dir = Path(tmp)
@@ -73,6 +86,7 @@ if generate:
                         year=start_date.year,
                         bin_size=resolved_bin,
                         output_dir=output_dir,
+                        cache_dir=cache_dir,
                     )
                 else:
                     start = pd.Timestamp(start_date, tz="UTC")
@@ -88,6 +102,7 @@ if generate:
                         end=end,
                         bin_size=resolved_bin,
                         output_dir=output_dir,
+                        cache_dir=cache_dir,
                     )
 
                 image_bytes = output_path.read_bytes()
