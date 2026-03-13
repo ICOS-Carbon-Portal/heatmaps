@@ -32,6 +32,7 @@ st.markdown(
     }
     [data-testid="collapsedControl"] { display: none; }
     [data-testid="stBaseButton-headerNoPadding"] { display: none; }
+    [data-testid="stDecoration"] { display: none; }
     </style>
     """,
     unsafe_allow_html=True,

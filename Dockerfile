@@ -24,6 +24,9 @@ RUN uv pip install . --system
 # Replace Streamlit's bundled favicon with the ICOS one
 RUN convert web/favicon.ico -thumbnail 32x32 /usr/local/lib/python3.12/site-packages/streamlit/static/favicon.png
 
+# Replace the default page title in Streamlit's bundled HTML
+RUN sed -i 's|<title>Streamlit</title>|<title>ICOS Heatmaps</title>|' /usr/local/lib/python3.12/site-packages/streamlit/static/index.html
+
 # Run as non-root
 RUN useradd --create-home --shell /bin/false appuser \
     && chown -R appuser /app
@@ -31,4 +34,4 @@ USER appuser
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "cd web && streamlit run streamlit_app.py --server.port ${PORT:-5000} --server.address 0.0.0.0"]
+CMD ["sh", "-c", "streamlit run web/streamlit_app.py --server.port ${PORT:-5000} --server.address 0.0.0.0"]
