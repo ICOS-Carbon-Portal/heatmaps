@@ -24,8 +24,10 @@ RUN uv pip install . --system
 # Replace Streamlit's bundled favicon with the ICOS one
 RUN convert web/favicon.ico -thumbnail 32x32 /usr/local/lib/python3.12/site-packages/streamlit/static/favicon.png
 
-# Replace the default page title in Streamlit's bundled HTML
-RUN sed -i 's|<title>Streamlit</title>|<title>ICOS Heatmaps</title>|' /usr/local/lib/python3.12/site-packages/streamlit/static/index.html
+# Replace the default page title in Streamlit's bundled HTML and JS
+RUN sed -i 's|<title>Streamlit</title>|<title>ICOS Heatmaps</title>|' /usr/local/lib/python3.12/site-packages/streamlit/static/index.html \
+    && sed -i 's|function getTitle(n){return n||"Streamlit"}|function getTitle(n){return n||"ICOS Heatmaps"}|' \
+       /usr/local/lib/python3.12/site-packages/streamlit/static/static/js/index.RuhrnD1v.js
 
 # Run as non-root
 RUN useradd --create-home --shell /bin/false appuser \
