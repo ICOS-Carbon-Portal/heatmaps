@@ -1,0 +1,26 @@
+/* Dash auto-loads any CSS in the assets/ folder */
+
+body {
+    background: #fafafa;
+}
+
+h1 {
+    color: #1a3a5c;
+    font-size: 1.6rem;
+}
+
+details summary:hover {
+    color: #1a73e8;
+}
+
+table td, table th {
+    padding: 4px 12px;
+}
+
+table a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+table a:hover {
+    text-decoration: underline;
+}
