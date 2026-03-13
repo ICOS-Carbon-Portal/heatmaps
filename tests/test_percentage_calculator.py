@@ -17,9 +17,7 @@ def calc(series):
     return _percentage_calculator(series)
 
 
-def _percentages_for_station(
-    raw_data: pd.DataFrame, station: str, year: int
-) -> str:
+def _percentages_for_station(raw_data: pd.DataFrame, station: str, year: int) -> str:
     station_raw = raw_data[raw_data["station"] == station].copy()
     _, percentages = build_heatmap_dataset(
         raw_data=station_raw,

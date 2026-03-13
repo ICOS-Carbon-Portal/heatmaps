@@ -1,6 +1,6 @@
 """Run once to generate test fixtures from live SPARQL data.
 
-    hatch run python tests/create_fixtures.py
+hatch run python tests/create_fixtures.py
 """
 
 import json

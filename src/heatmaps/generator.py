@@ -311,8 +311,7 @@ def generate_heatmap(
     end = pd.Timestamp(f"{year}-12-31 23:59:59", tz="UTC")
     output_dir.mkdir(parents=True, exist_ok=True)
     source_data = (
-        raw_data if raw_data is not None
-        else fetch_raw_data(domain, cache_dir)
+        raw_data if raw_data is not None else fetch_raw_data(domain, cache_dir)
     )
     parsed_data, percentages = build_heatmap_dataset(
         raw_data=source_data,

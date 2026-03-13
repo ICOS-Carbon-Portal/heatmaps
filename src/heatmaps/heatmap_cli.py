@@ -177,10 +177,9 @@ def main(
     ] = Path("output"),
 ) -> None:
     """Generate ICOS raw data coverage heatmaps."""
-    if report is None and year is None and period is None:
+    if report is None and year is None and period is None and domain is None:
         typer.echo(ctx.get_help())
-        raise typer.Exit()
-
+        raise typer.Exit(0)
     timestamp = datetime.now().strftime("%Y%m%dT%H%M%S")
     output_root = output_dir / timestamp
 
@@ -231,9 +230,13 @@ def main(
     typer.echo(f"Generated {output_path}.")
 
 
+app = typer.Typer(no_args_is_help=True)
+app.command()(main)
+
+
 def run() -> None:
     """Run the heatmaps CLI."""
-    typer.run(main)
+    app()
 
 
 if __name__ == "__main__":

@@ -2,14 +2,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pandas as pd
-import pytest
-import typer
 from typer.testing import CliRunner
 
-from heatmaps.heatmap_cli import main
-
-app = typer.Typer()
-app.command()(main)
+from heatmaps.heatmap_cli import app
 
 runner = CliRunner()
 
@@ -40,7 +35,9 @@ def test_help_flag_prints_help():
     assert "Generate ICOS raw data coverage heatmaps" in result.output
     for opt in EXPECTED_OPTIONS:
         assert opt in result.output, f"missing option {opt!r} in --help output"
-    assert result.output == runner.invoke(app, []).output
+    no_args_result = runner.invoke(app, [])
+    assert no_args_result.exit_code == 0
+    assert result.output == no_args_result.output
 
 
 def _minimal_raw_data(year: int = 2023) -> pd.DataFrame:
@@ -60,9 +57,12 @@ def test_year_domain_generates_png(tmp_path: Path) -> None:
         result = runner.invoke(
             app,
             [
-                "--year", "2023",
-                "--domain", "atmosphere",
-                "--output-dir", str(tmp_path),
+                "--year",
+                "2023",
+                "--domain",
+                "atmosphere",
+                "--output-dir",
+                str(tmp_path),
             ],
         )
 
