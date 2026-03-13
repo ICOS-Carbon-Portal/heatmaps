@@ -1,9 +1,11 @@
 # ICOS Heatmaps
 
-ICOS Heatmaps is a Python CLI that visualises raw data coverage across ICOS
-network stations. It fetches data live from the ICOS Carbon Portal via SPARQL
-and renders colour-coded heatmaps — broken down by station and time bin — for
-the atmosphere and ecosystem domains.
+ICOS Heatmaps visualises raw data coverage across ICOS network stations,
+broken down by station and time bin, for the atmosphere and ecosystem domains.
+It is available as a [web app](https://heatmaps.app.icos-cp.eu/) — no
+installation required. This repository also provides a Python CLI that fetches
+data live from the ICOS Carbon Portal via SPARQL and renders the same
+colour-coded heatmaps locally.
 
 ## Installation
 
@@ -12,7 +14,7 @@ Python 3.11 or later is required.
 Run the following commands to set up the environment and install the package:
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/ICOS-Carbon-Portal/heatmaps
 cd heatmaps
 python -m venv .venv
 source .venv/bin/activate
@@ -102,6 +104,21 @@ heatmaps --year 2025 --domain ecosystem --bin monthly
 - `--output-dir <path>`: base directory for output. Defaults to `output/`
   under the current working directory. A timestamped subdirectory is always
   created inside it.
+
+## Shell completion
+
+Heatmaps supports shell autocompletion through Typer:
+
+```bash
+heatmaps --install-completion
+```
+
+If automatic shell detection is not available, print the completion script
+and install it manually:
+
+```bash
+heatmaps --show-completion bash
+```
 
 ## Output
 
