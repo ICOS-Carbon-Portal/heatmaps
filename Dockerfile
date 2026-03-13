@@ -31,4 +31,4 @@ USER appuser
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "streamlit run web/streamlit_app.py --server.port ${PORT:-5000} --server.address 0.0.0.0"]
+CMD ["sh", "-c", "cd web && streamlit run streamlit_app.py --server.port ${PORT:-5000} --server.address 0.0.0.0"]
