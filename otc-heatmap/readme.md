@@ -1,6 +1,8 @@
 # OTC KPI Dashboard
 
-Interactive heatmap of monthly fCO₂ QC2 percentages across ICOS OTC ocean stations.
+An interactive dashboard for monitoring the data quality of fCO₂ measurements in Level 2 datasets, as well as the availability of Level 1 Near Real-Time (NRT) data from ICOS ocean stations.
+
+The heatmap displays the monthly percentage of fCO₂ records flagged as good quality (QC = 2) relative to all valid measurements. Dark grey horizontal bars indicate the temporal coverage of the most recent Level 1 NRT data for stations that provide NRT observations. All data are sourced in real time from the [ICOS Carbon Portal](https://data.icos-cp.eu).
 
 ## Quick start
 
@@ -41,14 +43,20 @@ Edit `config.py` to change:
 - `IGNORE_STATIONS` — stations to exclude
 - `COLORMAPS` — available colour map options
 - `DEFAULT_N_MONTHS` / `DEFAULT_CMAP` — initial widget values
+- `DESCRIPTION` — descriptive text shown above the heatmap
 
 ## Project structure
 
 | File | Purpose |
 |---|---|
-| `app.py` | Dash app, layout, callbacks |
-| `data_fetch.py` | ICOS API calls, data processing, in-memory cache |
-| `config.py` | Constants, SPARQL query, settings |
+| `app.py` | Dash app, layout, callbacks, figure generation |
+| `data_fetch.py` | ICOS API calls, data processing, incremental disk cache |
+| `config.py` | Constants, SPARQL queries, settings |
 | `assets/style.css` | Custom styling (auto-loaded by Dash) |
 | `requirements.txt` | Python dependencies |
 | `Dockerfile` | Container deployment |
+| `l2_cache.pkl` | Auto-generated disk cache for Level 2 processed results |
+
+## Credits
+
+Developed by the [ICOS Carbon Portal](https://www.icos-cp.eu) with the assistance of Claude (Anthropic).
