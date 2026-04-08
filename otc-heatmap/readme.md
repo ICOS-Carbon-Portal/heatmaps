@@ -20,6 +20,8 @@ python app.py
 
 Open http://localhost:8050 in your browser.
 
+You can pre-set the number of months shown by adding `?months=N` to the URL, e.g. http://localhost:8050/?months=6.
+
 ## Production deployment
 
 ```bash
@@ -40,7 +42,7 @@ docker run -p 8050:8050 otc-kpi
 Edit `config.py` to change:
 
 - `CACHE_TTL` — how often data is re-fetched from ICOS (default: 6 hours)
-- `IGNORE_STATIONS` — stations to exclude
+- `IGNORE_STATIONS` — list of station IDs to exclude from the dashboard (e.g. `"BE-SOOP-Belgica"`). Add or remove entries to control which stations appear in the heatmap.
 - `COLORMAPS` — available colour map options
 - `DEFAULT_N_MONTHS` / `DEFAULT_CMAP` — initial widget values
 - `DESCRIPTION` — descriptive text shown above the heatmap

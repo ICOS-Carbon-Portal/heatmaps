@@ -20,7 +20,7 @@ This dashboard monitors the data quality of fCO₂ measurements in Level 2 datas
 
 The heatmap displays the monthly percentage of fCO₂ records flagged as good quality (QC = 2) relative to all valid measurements. Higher percentages indicate better data quality for a given month. Empty cells represent months where no Level 2 data are available. Hover over each cell to view the number of valid measurements and those classified as good quality. Dark grey horizontal bars indicate the temporal coverage of the most recent Level 1 NRT data for stations that provide NRT observations.
 
-Use the controls above the dashboard to adjust the number of months displayed and the color scale. The dropdown menu below the heatmap provides links to station landing pages, along with access to the most recent data objects for both Level 1 NRT and Level 2 datasets.
+Use the controls above the dashboard to adjust the number of months displayed and the color scale. You can also pre-set the number of months by adding `?months=N` to the URL (e.g. `?months=6`). The dropdown menu below the heatmap provides links to station landing pages, along with access to the most recent data objects for both Level 1 NRT and Level 2 datasets.
 
 All data are sourced in real time from ICOS Carbon Portal.
 """

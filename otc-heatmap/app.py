@@ -13,6 +13,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 from dash import Dash, dcc, html, Input, Output, callback, ctx
+from urllib.parse import parse_qs, urlparse
 
 from config import COLORMAPS, DEFAULT_N_MONTHS, DEFAULT_CMAP, DESCRIPTION
 from data_fetch import load_data
@@ -56,6 +57,8 @@ else:
 # Layout
 # ---------------------------------------------------------------------------
 app.layout = html.Div([
+
+    dcc.Location(id="url", refresh=False),
 
     html.H1("OTC KPI Dashboard", style={"textAlign": "center", "marginTop": 20}),
 
@@ -103,7 +106,11 @@ app.layout = html.Div([
     ], style={"textAlign": "center", "margin": "16px 0"}),
 
     # Description
-    html.Div(
+    html.Details([
+        html.Summary(
+            "Explanatory text (click to expand)",
+            style={"fontWeight": "bold", "cursor": "pointer", "fontSize": 16},
+        ),
         dcc.Markdown(
             DESCRIPTION or "*[ Description placeholder — edit DESCRIPTION in config.py ]*",
             dangerously_allow_html=True,
@@ -114,7 +121,7 @@ app.layout = html.Div([
                 "margin": "8px 40px 16px",
             },
         ),
-    ),
+    ], style={"margin": "10px 40px 16px"}),
 
     # Heatmap
     dcc.Loading(
@@ -137,6 +144,23 @@ app.layout = html.Div([
 # ---------------------------------------------------------------------------
 # Callbacks
 # ---------------------------------------------------------------------------
+@callback(
+    Output("n-months", "value"),
+    Input("url", "search"),
+    prevent_initial_call=False,
+)
+def set_months_from_url(search):
+    if search:
+        params = parse_qs(search.lstrip("?"))
+        if "months" in params:
+            try:
+                n = int(params["months"][0])
+                return max(1, min(n, N_MONTHS_TOTAL or n))
+            except ValueError:
+                pass
+    return DEFAULT_N_MONTHS
+
+
 @callback(
     Output("heatmap", "figure"),
     Output("link-table", "children"),
@@ -191,7 +215,8 @@ def update_heatmap(n, cmap_name, _refresh_clicks):
                     f"Valid points: {int(nv.iloc[r, c])}<br>"
                     f"QC2 points: {int(nq.iloc[r, c])}"
                     if pd.notna(z[r][c])
-                    else ("No Level 2 Release" if c > last_data_col[r] else "No Level 2 Data")
+                    else ("No level 2 data published" if last_data_col[r] == -1
+                          else ("No level 2 since last release" if c > last_data_col[r] else "No level 2 data"))
                 )
             )
             for c in range(len(col_labels))
